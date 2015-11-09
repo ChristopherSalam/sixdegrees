@@ -26,31 +26,31 @@ app.controller('BallerController', function($scope, $http){
 | to the DB and returns our query   |
 |==================================*/
 
-   $http({
-     method:"POST",
-     url: '/player',
-     accepts: "application/json",
-     datatype:"json",
-     data: { "query" : query },
-     error:function(jqxhr, textstatus, errorthrown){console.log("error",query,errorthrown)}
-   }).then(function(response) {
-     console.log(response.data.data);
+   // $http({
+   //   method:"POST",
+   //   url: '/player',
+   //   accepts: "application/json",
+   //   datatype:"json",
+   //   data: { "query" : query },
+   //   error:function(jqxhr, textstatus, errorthrown){console.log("error",query,errorthrown)}
+   // }).then(function(response) {
+   //   console.log(response.data.data);
 
 /*==================================|
 | This clears data and preps data   |
 | for output.                       |
 |==================================*/
 
-     $scope.dataset = '';
-      var answer = response.data.data[0][0];
-      var years = response.data.data[0][1];
-      for (var i = 0; i < answer.length; i++){
-        if (i % 2 === 0) { answer[i] = answer[i].split(" ").map(function(a){return a.capitalizeFirstLetter(); }).join(" ") }
-        else if (i === 1) { answer[i] = ' played in ' + answer[i] + " (" + years[i] + ") with "; }
-        else { answer[i] = ' who played in ' + answer[i] + " (" + years[i] + ") with "; }
-     }
-     $scope.dataset = answer.join('');
-    });
+    //  $scope.dataset = '';
+    //   var answer = response.data.data[0][0];
+    //   var years = response.data.data[0][1];
+    //   for (var i = 0; i < answer.length; i++){
+    //     if (i % 2 === 0) { answer[i] = answer[i].split(" ").map(function(a){return a.capitalizeFirstLetter(); }).join(" ") }
+    //     else if (i === 1) { answer[i] = ' played in ' + answer[i] + " (" + years[i] + ") with "; }
+    //     else { answer[i] = ' who played in ' + answer[i] + " (" + years[i] + ") with "; }
+    //  }
+    //  $scope.dataset = answer.join('');
+    // });
 
 /*==================================|
 | This is a brand new picture       |
@@ -58,21 +58,34 @@ app.controller('BallerController', function($scope, $http){
 |==================================*/
 
       var ballerName = $scope.searchText.name.split(/[ ]+/).map(function(el){ return el.capitalizeFirstLetter()}).join('%20');
-      var ballerWiki = "https://en.wikipedia.org/w/api.php?action=mobileview&format=json&page=" + ballerName + "&redirect=no&sections=0&prop=text&sectionprop=toclevel%7Clevel%7Cline%7Cnumber%7Cindex%7Cfromtitle%7Canchor&callback=?"
+      var ballerWiki = "https://en.wikipedia.org/w/api.php?action=mobileview&format=json&page=" + ballerName + "&redirect=no&sections=0&prop=text&sectionprop=toclevel%7Clevel%7Cline%7Cnumber%7Cindex%7Cfromtitle%7Canchor&callback=?";
 
-      // $http({
-      //   method:"POST",
-      //   url: '/picture',
-      //   accepts: "application/json",
-      //   datatype:"json",
-      //   data: {"data": ballerWiki},
-      //   error:function(data, status) { console.log(data || "Request failed"); }
-      // }).then(function(json) {
-      //   $get({method: 'JSON', url: json.data}).
+      // console.log("ball",ballerName,ballerWiki);
+
+      $http({
+        method:"POST",
+        url: '/picture',
+        accepts: "application/json",
+        datatype:"json",
+        data: {"data": ballerWiki},
+        error:function(data, status) { console.log(data || "Request failed"); }
+      })
+      .then(function(json) {
+
+        console.log(json);
+      //   $get({method: 'JSON', url: json.data}).then(function(json) {
+          // var wikitext = json.mobileview.sections[0].text;
+          $('#picBaller').hide().append(wikitext);
+          var img = $('#picBaller').find('.infobox img:first').attr('src');
+          $('#picBaller').show().html('<img style="height: 150px;  border-radius:75px" src="' + img + '"/>');
+      //   })
+
+      // $.getJSON(ballerWiki, function(json) { 
       //     var wikitext = json.mobileview.sections[0].text;
       //     $('#picBaller').hide().append(wikitext);
       //     var img = $('#picBaller').find('.infobox img:first').attr('src');
       //     $('#picBaller').show().html('<img style="height: 150px;  border-radius:75px" src="' + img + '"/>');
-      //   })
-  };
+      //   });
+    });
+  }
 });

@@ -55,6 +55,7 @@ app.post('/player', function(req, res){
 });
 
 app.post('/picture', function(req, res){
+  // console.log(req.body); 
   var str = req.body["data"];
   res.send(str);
 });
