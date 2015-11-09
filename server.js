@@ -10,7 +10,7 @@ var express = require('express'),
   path = require('path'),
   bodyParser = require('body-parser'),
   app = express(),
-  dbRemote = require('db');
+  dbRemote = require('./db/db.js');
 
 /*=======================================================|
 |   Sets port to environment port or local port          |
