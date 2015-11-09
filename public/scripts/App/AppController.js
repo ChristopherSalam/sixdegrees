@@ -10,8 +10,3 @@ app.controller('AppController', function($scope, $filter) {
     });
 
 });
-
-
-
-
-
