@@ -10,7 +10,7 @@ var express = require('express'),
   path = require('path'),
   bodyParser = require('body-parser'),
   app = express(),
-  dbRemote = require('./db/db');
+  dbRemote = require('db/db');
 
 /*=======================================================|
 |   Sets port to environment port or local port          |
@@ -54,11 +54,11 @@ app.post('/player', function(req, res){
   });
 });
 
-app.post('/picture', function(req, res){
-  // console.log(req.body); 
-  var str = req.body["data"];
-  res.send(str);
-});
+// app.post('/picture', function(req, res){
+//   // console.log(req.body);
+//   var str = req.body["data"];
+//   res.send(str);
+// });
 
 /*=======================================================|
 |    Test                                                |
