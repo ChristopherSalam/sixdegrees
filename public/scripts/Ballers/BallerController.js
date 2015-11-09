@@ -51,6 +51,8 @@ app.controller('BallerController', function($scope, $http){
      }
      $scope.dataset = answer.join('');
     });
+  }
+});
 
 /*==================================|
 | This is a brand new picture       |
