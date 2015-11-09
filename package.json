@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Greenfield Project",
   "main": "index.js",
-  "engines":{"node": "4.2.2"},
+  "engines":{
+    "node": "4.2.2",
+      "npm": "1.1.x",
+
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
