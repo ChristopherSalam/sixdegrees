@@ -43,11 +43,13 @@ app.controller('BallerController', function($scope, $http){
 
      $scope.dataset = '';
       var answer = response.data.data[0][0];
+      console.log("answer ", answer);
       var years = response.data.data[0][1];
+      console.log('years ', years);
       for (var i = 0; i < answer.length; i++){
         if (i % 2 === 0) { answer[i] = answer[i].split(" ").map(function(a){return a.capitalizeFirstLetter(); }).join(" ") }
-        else if (i === 1) { answer[i] = ' played in ' + answer[i] + " (" + years[i] + ") with "; }
-        else { answer[i] = ' who played in ' + answer[i] + " (" + years[i] + ") with "; }
+        else if (i === 1) { answer[i] = ' played in ' + answer[i].toUpperCase() + " (" + years[i] + ") with "; }
+        else { answer[i] = ' who played in ' + answer[i].toUpperCase() + " (" + years[i] + ") with "; }
      }
      $scope.dataset = answer.join('');
     });

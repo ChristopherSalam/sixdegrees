@@ -2,11 +2,13 @@
 <form name="ballerselect" style="margin-bottom: 70px;" novalidate>
   <input id="ballerOne" name="one" novalidate type="text" placeholder="Player 1"
     ng-model="searchText.name"
-    ng-class="{'good': ((ballers|filter:searchText:case:false).length === 1) }"/>
+    ng-class="{'good': ((ballers|filter:searchText:case:false).length === 1) }"
+    ng-submit="callDB(searchText.name, search.name)"/>
   <img src="styles/arrow.jpeg" height="10px">
   <input id="ballerTwo" novalidate type="text" placeholder="Player 2"
     ng-model="search.name"
-    ng-class="{'good2': ((ballers|filter:search:case:true).length === 1) }"/><br>
+    ng-class="{'good2': ((ballers|filter:search:case:true).length === 1) }"
+    ng-submit="callDB(searchText.name, search.name)"/><br>
     <br>
     <br>
     <br>

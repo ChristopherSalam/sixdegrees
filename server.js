@@ -8,6 +8,7 @@ var express = require('express'),
   https = require('https'),
   http = require('http'),
   path = require('path'),
+  request = require("request"),
   bodyParser = require('body-parser'),
   app = express(),
   dbRemote = require('./db/db.js');
@@ -48,10 +49,28 @@ app.get('/', function(req, res) {
 });
 
 app.post('/player', function(req, res){
-  dbRemote.queryRaw(req.body.query,{}, function(err, result){
-        if (err) throw err;
-  res.send(result);
+
+  // old method
+  // dbRemote.queryRaw(req.body.query,{}, function(err, result){
+  //       if (err) throw err;
+  // res.send(result);
+  // });
+
+  // new method
+  var postData = { 'query' : req.body.query, 'params': {} };
+  // console.log("postData", postData);
+  request({
+    uri: "http://ec2-54-213-120-12.us-west-2.compute.amazonaws.com:7474/db/data/cypher",
+    method: "POST",
+    form: postData,
+    headers: {
+      "Accept": "application/json;charset=UTF-8",
+      "Content-Type": "application/json"
+    }
+  }, function(error, response, body) {
+    res.send(body);
   });
+
 });
 
 // app.post('/picture', function(req, res){
