@@ -4,11 +4,11 @@ app.controller('BallerController', function($scope, $http){
 
   //First NBA player
   $scope.searchText = {};
-  $scope.searchText.name = '';
+  $scope.searchText.name = 'LeBron James';
 
   //Second NBA player.
   $scope.search = {};
-  $scope.search.name = '';
+  $scope.search.name = 'Kobe Bryant';
 
   $scope.callDB = function() {
 
