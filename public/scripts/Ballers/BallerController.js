@@ -1,4 +1,4 @@
-app.controller('BallerController', function($scope, $http){
+app.controller('BallerController', function($scope, $http, wiki){
 
   String.prototype.capitalizeFirstLetter = function() { return this.charAt(0).toUpperCase() + this.slice(1); }
 
@@ -9,6 +9,28 @@ app.controller('BallerController', function($scope, $http){
   //Second NBA player.
   $scope.search = {};
   $scope.search.name = 'Kobe Bryant';
+
+  window.wiki = function(player, img){
+    console.log("WIKI CALLED on ", player);
+    wiki.get(player).success(function(data, status, headers, config) {
+      console.log("WIKI success");
+      var imageset = JSON.parse(data.body).query.pages;
+      angular.forEach(imageset, function(image, index){
+        console.log("each ", image.original);
+        angular.element(document.querySelector(img))
+        .attr('src', image.original.source)
+        .attr('height', Math.floor(image.original.height/10))
+        .attr('width', Math.floor(image.original.width/10));
+      });
+    }).error(function(error) {
+      console.log("WIKI failure", error);
+    });
+  };
+
+  window.pics = function(){
+    window.wiki($scope.searchText.name, '#picOne');
+    window.wiki($scope.search.name, '#picTwo');
+  };
 
   $scope.callDB = function() {
 
@@ -54,35 +76,66 @@ app.controller('BallerController', function($scope, $http){
      $scope.dataset = answer.join('');
     });
   }
-});
+})
+
 
 /*==================================|
 | This is a brand new picture       |
 |  feature using wikipedia.         |
 |==================================*/
 
+.factory("wiki", ['$http', function ($http) {
+    return {
+        get: function (player) {
+            return $http({
+                method: 'GET',
+                url: '/picture',
+                params: {"player": player}
+              })
+            }
+    };
+}]);
+
 //       var ballerName = $scope.searchText.name.split(/[ ]+/).map(function(el){ return el.capitalizeFirstLetter()}).join('%20');
-//       var ballerWiki = "https://en.wikipedia.org/w/api.php?action=mobileview&format=json&page=" + ballerName + "&redirect=no&sections=0&prop=text&sectionprop=toclevel%7Clevel%7Cline%7Cnumber%7Cindex%7Cfromtitle%7Canchor&callback=?";
-//
+
 //       // console.log("ball",ballerName,ballerWiki);
 //
-//       $http({
-//         method:"POST",
-//         url: '/picture',
-//         accepts: "application/json",
-//         datatype:"json",
-//         data: {"data": ballerWiki},
-//         error:function(data, status) { console.log(data || "Request failed"); }
-//       })
-//       .then(function(json) {
+
+//  window.wiki = function(){
+      // var d = $q.defer();
+
+
+      // $http.jsonp(ballerWiki).success(function(data, status, headers, config){
+        // console.log("success", data, status, headers, config);
+        // d.resolve(results);
+      // }).error(function(error){
+        // console.log("error", error);
+        // d.reject(error);
+      // });
+      // return d.promise;
+      // }
+
+
+
+      // $http.jsonp(ballerWiki)
+        //method:"GET",
+        //url: ballerWiki,
+        //accepts: "application/json",
+        //datatype:"json",
+        //error:function(data, status) { console.log(data || "Request failed"); }
+      // )
+      // .success(function(json) {
 //
-//         console.log(json);
+        // console.log("success", json);
 //       //   $get({method: 'JSON', url: json.data}).then(function(json) {
 //           // var wikitext = json.mobileview.sections[0].text;
 //           $('#picBaller').hide().append(wikitext);
 //           var img = $('#picBaller').find('.infobox img:first').attr('src');
 //           $('#picBaller').show().html('<img style="height: 150px;  border-radius:75px" src="' + img + '"/>');
-//       //   })
+      // }).error(function(json) {
+        // console.log("error", json);
+      // });
+    // };
 //
 //       // $.getJSON(ballerWiki, function(json) {
 //       //     var wikitext = json.mobileview.sections[0].text;

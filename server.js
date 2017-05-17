@@ -73,11 +73,14 @@ app.post('/player', function(req, res){
 
 });
 
-// app.post('/picture', function(req, res){
-//   // console.log(req.body);
-//   var str = req.body["data"];
-//   res.send(str);
-// });
+app.get('/picture', function(req, res){
+  console.log('picture of ', req.query.player);
+  var player = req.query.player.replace(/\s/g,"+");
+  var ballerWiki = 'https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles='+player;
+  request(ballerWiki, function(error, response, body) {
+    res.send(response);
+  });
+});
 
 /*=======================================================|
 |    Test                                                |
