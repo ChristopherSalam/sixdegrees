@@ -10,30 +10,38 @@ app.controller('BallerController', function($scope, $http, wiki){
   $scope.search = {};
   $scope.search.name = 'Kobe Bryant';
 
-  window.wiki = function(player, img){
+  console.log("WIKI func");
+
+  $scope.wiki = function(player, img){
     console.log("WIKI CALLED on ", player);
     wiki.get(player).success(function(data, status, headers, config) {
       console.log("WIKI success");
       var imageset = JSON.parse(data.body).query.pages;
       angular.forEach(imageset, function(image, index){
-        console.log("each ", image.original);
-        angular.element(document.querySelector(img))
-        .attr('src', image.original.source)
-        .attr('height', Math.floor(image.original.height/10))
-        .attr('width', Math.floor(image.original.width/10));
+        console.log("each ", image);
+        if (image) {
+          angular.element(document.querySelector(img))
+            .attr('src', image.original.source)
+            // .attr('height', Math.floor(image.original.height/5))
+            .attr('height', 100)
+            // .attr('width', 75)
+            // .attr('width', Math.floor(image.original.width/5));
+
+        }
       });
     }).error(function(error) {
       console.log("WIKI failure", error);
     });
   };
 
-  window.pics = function(){
-    window.wiki($scope.searchText.name, '#picOne');
-    window.wiki($scope.search.name, '#picTwo');
+  $scope.pics = function(){
+    $scope.wiki($scope.searchText.name, '#picOne');
+    $scope.wiki($scope.search.name, '#picTwo');
   };
 
   $scope.callDB = function() {
 
+    $scope.pics();
 /*==================================|
 | This is the shortest path query   |
 |==================================*/
@@ -95,54 +103,3 @@ app.controller('BallerController', function($scope, $http, wiki){
             }
     };
 }]);
-
-//       var ballerName = $scope.searchText.name.split(/[ ]+/).map(function(el){ return el.capitalizeFirstLetter()}).join('%20');
-
-//       // console.log("ball",ballerName,ballerWiki);
-//
-
-//  window.wiki = function(){
-      // var d = $q.defer();
-
-
-      // $http.jsonp(ballerWiki).success(function(data, status, headers, config){
-        // console.log("success", data, status, headers, config);
-        // d.resolve(results);
-      // }).error(function(error){
-        // console.log("error", error);
-        // d.reject(error);
-      // });
-      // return d.promise;
-      // }
-
-
-
-      // $http.jsonp(ballerWiki)
-        //method:"GET",
-        //url: ballerWiki,
-        //accepts: "application/json",
-        //datatype:"json",
-        //error:function(data, status) { console.log(data || "Request failed"); }
-      // )
-      // .success(function(json) {
-//
-        // console.log("success", json);
-//       //   $get({method: 'JSON', url: json.data}).then(function(json) {
-//           // var wikitext = json.mobileview.sections[0].text;
-//           $('#picBaller').hide().append(wikitext);
-//           var img = $('#picBaller').find('.infobox img:first').attr('src');
-//           $('#picBaller').show().html('<img style="height: 150px;  border-radius:75px" src="' + img + '"/>');
-      // }).error(function(json) {
-        // console.log("error", json);
-      // });
-    // };
-//
-//       // $.getJSON(ballerWiki, function(json) {
-//       //     var wikitext = json.mobileview.sections[0].text;
-//       //     $('#picBaller').hide().append(wikitext);
-//       //     var img = $('#picBaller').find('.infobox img:first').attr('src');
-//       //     $('#picBaller').show().html('<img style="height: 150px;  border-radius:75px" src="' + img + '"/>');
-//       //   });
-//     });
-//   }
-// });

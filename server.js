@@ -49,7 +49,6 @@ app.get('/', function(req, res) {
 });
 
 app.post('/player', function(req, res){
-
   // old method
   // dbRemote.queryRaw(req.body.query,{}, function(err, result){
   //       if (err) throw err;
@@ -70,14 +69,16 @@ app.post('/player', function(req, res){
   }, function(error, response, body) {
     res.send(body);
   });
-
 });
 
 app.get('/picture', function(req, res){
-  console.log('picture of ', req.query.player);
-  var player = req.query.player.replace(/\s/g,"+");
-  var ballerWiki = 'https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles='+player;
+  var player = req.query.player.replace(/\s+/g, "+");
+  if (player.match(/lebron/i)) player = player.replace(/lebron/i, 'LeBron');
+  player = player.replace(/\b\w/g, function(l){ return l.toUpperCase(); })
+  // console.log('picture of ', req.query.player, player);
+  var ballerWiki = 'https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles=' + player;
   request(ballerWiki, function(error, response, body) {
+    if (error) console.log("error:", error);
     res.send(response);
   });
 });
